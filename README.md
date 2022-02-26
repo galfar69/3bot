@@ -21,7 +21,13 @@
 4. Get discord bot token
 5. Get Your Mc Creditentials
 6. Run this command in console:
-6. node discord.js <discord bot token> <channel id> <host> <port> [<name>] [<password>] 
+6. node discord.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]
+  - discord bot token: The token of the discord bot used for posting messages
+  - channel id: The ID of the discord channel you want chat messages to be posted to
+  - host: Minecraft server IP address
+  - port: Minecraft server port (default is 25565)
+  - name: Username of minecraft account used for the bot
+  - password: Password of minecraft account used for the bot
 ```
 
 ## Author
