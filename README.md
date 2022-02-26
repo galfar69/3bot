@@ -14,15 +14,24 @@
 ## Usage
 
 ```sh
-1. Clone the project\n2. Get Firebase service key(Firestore)\n3. Get Your Mc Creditentials
+1. Clone the project
+2. Install node(if not installed)
+3. Get Firebase service key(Firestore)
+3. Replace the your-service-account-key.json with the firebase key
+4. Get discord bot token
+5. Get Your Mc Creditentials
+6. Run this command in console:
+6. node discord.js <discord bot token> <channel id> <host> <port> [<name>] [<password>] 
 ```
 
 ## Author
 
-👤 **galfar**
+👤 **galfar** and
+👤 **3b3t community**
 
 * Website: galfar.net
 * Github: [@galfar69](https://github.com/galfar69)
+* Discord: [3B3T Community](https://discord.gg/P4tpeDXWw2)
 
 ## 🤝 Contributing
 
@@ -30,9 +39,11 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+Give a ⭐️ if this project is cool!
 
 ## 📝 License
 
 Copyright © 2022 [galfar](https://github.com/galfar69).<br />
 This project is [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/) licensed.
+
+***
