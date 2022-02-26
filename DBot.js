@@ -20,7 +20,7 @@ if (process.argv.length < 6 || process.argv.length > 8) {
   var fb = require("firebase-admin");
 
   // Get the creditentials used for accessing the db
-  var serviceAccount = require("your-service-account-key.json");
+  var serviceAccount = require("./your-service-account-key.json");
 
   // Initialize the Firebase access
   fb.initializeApp({
@@ -651,7 +651,7 @@ if (process.argv.length < 6 || process.argv.length > 8) {
     channel.send({embeds: [embed]})
 
     // Update the topic with the bot is offline
-    updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, lastTps, false)
+    // updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, lastTps, false)
 
     // Terminate the process to be sure
     process.exit(1)
