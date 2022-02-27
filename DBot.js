@@ -432,6 +432,19 @@ if (process.argv.length < 7 || process.argv.length > 8) {
           }
           break
 
+      case prefix + "uptime":
+        var current_time = Date.now()
+
+        const uptime_embed = new MessageEmbed()
+        .setTitle("Uptime")
+        .setColor("#1133aa")
+        .setDescription(`${millisToReadable((current_time - start_time))}`)
+        .setFooter({ text: 'Made by 3b3t community'})
+        .setTimestamp()
+
+        channel.send({embeds: [uptime_embed]})
+        break
+
       //
       default:
         if (message.content === null || message.content == "") break
