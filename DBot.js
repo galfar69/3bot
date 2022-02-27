@@ -9,8 +9,8 @@
 
 
 // Get the arguments to start the bot
-if (process.argv.length < 6 || process.argv.length > 8) {
-    console.log('Usage : node discord.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]')
+if (process.argv.length < 7 || process.argv.length > 8) {
+    console.log('Usage : node DBot.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]')
     process.exit(1)
   }
 
@@ -57,6 +57,7 @@ if (process.argv.length < 6 || process.argv.length > 8) {
     {name:"type", description:"Tells you the server type its running on.", usage:`${prefix}type`},
     {name:"leak", description:"Leaks random users cords(maybe its real, maybe it isn't...", usage:`${prefix}leak`},
     {name:"tps", description:"Tells the current server TPS.", usage:`${prefix}tps`},
+    {name:"uptime", description:"Shows the uptime of the bots.", usage:`${prefix}uptime`},
   ]
 
   // Command list used for discord 
@@ -66,7 +67,8 @@ if (process.argv.length < 6 || process.argv.length > 8) {
     {name:"tps", description:"Shows the current TPS of the server", usage:`${prefix}tps`},
     {name:"health", description:"Sends a message with the bots health level", usage:`${prefix}health`},
     {name:"hunger", description:"Sends a message with the bots hunger level", usage:`${prefix}hunger`},
-    {name:"message", description:"Whispers(send message to user)", usage:`${prefix}msg [player] [message]`}
+    {name:"message", description:"Whispers(send message to user)", usage:`${prefix}msg [player] [message]`},
+    {name:"uptime", description:"Shows the uptime of the bots", usage:`${prefix}uptime`},
   ]
 
 
@@ -106,10 +108,25 @@ if (process.argv.length < 6 || process.argv.length > 8) {
 
     // If channel is undefined/null
     if (!channel) {
-      console.log(`I could not find the channel (${process.argv[3]})!\nUsage : node discord.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]`)
+      console.log(`I could not find the channel (${process.argv[3]})!\nUsage : node DBot.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]`)
       process.exit(1)
     }
   })
+
+  // Set the variable start_time to the current time and date once the discord bot and minecraft bot have successfully logged in
+  var start_time = Date.now()
+
+  // Converts milliseconds to a more readable format
+  function millisToReadable(ms) {
+    let seconds = (ms / 1000).toFixed(1);
+    let minutes = (ms / (1000 * 60)).toFixed(1);
+    let hours = (ms / (1000 * 60 * 60)).toFixed(1);
+    let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
+    if (seconds < 60) return seconds + " Sec";
+    else if (minutes < 60) return minutes + " Min";
+    else if (hours < 24) return hours + " Hrs";
+    else return days + " Days"
+  }
 
   // Sends a message everywhere: Discord, Minecraft
   function sendEverywhere(message, log = false, type = "normal") {
@@ -542,6 +559,10 @@ if (process.argv.length < 6 || process.argv.length > 8) {
         break
       
       // If no command was requested, means message was recieved
+      case prefix + "uptime":
+        var current_time = Date.now()
+        bot.chat(`Bot's uptime: ${millisToReadable((current_time - start_time))}`)
+        break
       default:
 
         const embed = new MessageEmbed()
@@ -599,13 +620,13 @@ if (process.argv.length < 6 || process.argv.length > 8) {
             `${player.username} seems OP - please nerf`
           ]
 
-          sendEverywhere(`${joinMessages[Math.floor(Math.random() * joinMessages.length)]}`, false, "welcome")
+          // sendEverywhere(`${joinMessages[Math.floor(Math.random() * joinMessages.length)]}`, false, "welcome")
         }
 
         // If the player never was on the server(While the bot was online and existed) then welcome him and register,
         // that he was on the server
         else {
-          sendEverywhere(`Welcome to 3B3T, ${player.username}`, false, "welcome")
+          // sendEverywhere(`Welcome to 3B3T, ${player.username}`, false, "welcome")
           db.collection("seen").doc(`${PlayerUUIDstringComplete}`).set({date: Date.now(), username: player.username})
         }
       })
@@ -648,13 +669,14 @@ if (process.argv.length < 6 || process.argv.length > 8) {
     .setFooter({ text: 'Made with ❤️ by galfar'})
     .setTimestamp()
 
-    channel.send({embeds: [embed]})
+    // var ch = client.channels.cache.get(channel.toString())
+    // ch.send({embeds: [embed]})
 
     // Update the topic with the bot is offline
     // updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, lastTps, false)
 
     // Terminate the process to be sure
-    process.exit(1)
+    // process.exit(1)
   })
 
   // When the bot encounters a minor error(non-crashing), log it
