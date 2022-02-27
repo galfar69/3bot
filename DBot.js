@@ -18,6 +18,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
   const https = require("https")
   const moment = require("moment")
   var fb = require("firebase-admin");
+  const { createHash } = require('crypto');
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -115,6 +116,11 @@ if (process.argv.length < 7 || process.argv.length > 8) {
 
   // Set the variable start_time to the current time and date once the discord bot and minecraft bot have successfully logged in
   var start_time = Date.now()
+
+  // Sha256 hash function
+  function hash(string) {
+    return createHash('sha256').update(string).digest('hex');
+  }
 
   // Converts milliseconds to a more readable format
   function millisToReadable(ms) {
@@ -578,9 +584,12 @@ if (process.argv.length < 7 || process.argv.length > 8) {
         break
       default:
 
+        // Make the embed have a unique color for each player
+        var embed_color = hash(username).substring(0,6)
+
         const embed = new MessageEmbed()
         .setAuthor({name: `${username}`, iconURL: `https://crafatar.com/avatars/${bot.players[username].uuid}?overlay`})
-        .setColor("#0055ff")
+        .setColor("#" + embed_color)
         .setDescription(`${message}`)
         //.setFooter({ text: 'Made with ❤️ by galfar'})
         .setTimestamp()
