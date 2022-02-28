@@ -1,14 +1,11 @@
 const { createHash } = require('crypto');
 
+
+// Purely utility. Math, hashing, etc...
 class Utility {
 
     constructor() {
 
-    }
-
-    // Get the TPS of the server
-    getTPS() {
-        return bot.getTps()
     }
 
     hash(string) {

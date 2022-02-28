@@ -20,8 +20,10 @@ if (process.argv.length == 7) {
   var fb = require("firebase-admin");
   const { createHash } = require('crypto');
   const Utility = require("./modules/utility.js")
+  const Info = require("./modules/info.js")
 
   const Util = new Utility()
+  const Inf = new Info()
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -244,10 +246,10 @@ if (process.argv.length == 7) {
     channel.send({embeds: [embed]})
 
     // Sets interval which the topic of the channel will be changed
-    lastTps = bot.getTps()
-    updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true)
+    lastTps = Inf.getTPS(bot)
+    updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Inf.getTPS(bot), true)
     setInterval(() => lastTps = bot.getTps, 90000)
-    setInterval(() => updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true), 150000)
+    setInterval(() => updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Inf.getTPS(bot), true), 150000)
     setInterval(() => {setPresence()}, 30000)
     return
   })
@@ -391,7 +393,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        channel.send(`Current TPS: ${Util.getTPS()}`)
+        channel.send(`Current TPS: ${Inf.getTPS(bot)}`)
         break
       
       // Sends Bot's Health level
@@ -577,7 +579,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        bot.chat(`Current server TPS: ${Util.getTPS()}`)
+        bot.chat(`Current server TPS: ${Inf.getTPS(bot)}`)
         break
       
       // If no command was requested, means message was recieved
