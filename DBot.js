@@ -19,6 +19,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
   const moment = require("moment")
   var fb = require("firebase-admin");
   const { createHash } = require('crypto');
+  const Utility = require("./modules/utility")
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -241,7 +242,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
     channel.send({embeds: [embed]})
 
     // Sets interval which the topic of the channel will be changed
-    lastTps = bot.getTps
+    lastTps = bot.getTps()
     updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true)
     setInterval(() => lastTps = bot.getTps, 90000)
     setInterval(() => updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true), 150000)
@@ -388,7 +389,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        channel.send(`Current TPS: ${bot.getTps()}`)
+        channel.send(`Current TPS: ${Utility.getTPS()}`)
         break
       
       // Sends Bot's Health level
@@ -574,7 +575,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        bot.chat(`Current server TPS: ${bot.getTps()}`)
+        bot.chat(`Current server TPS: ${Utility.getTPS()}`)
         break
       
       // If no command was requested, means message was recieved
@@ -585,7 +586,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       default:
 
         // Make the embed have a unique color for each player
-        var embed_color = hash(username).substring(0,6)
+        var embed_color = Utility.hash(username).substring(0,6)
 
         const embed = new MessageEmbed()
         .setAuthor({name: `${username}`, iconURL: `https://crafatar.com/avatars/${bot.players[username].uuid}?overlay`})
