@@ -9,7 +9,7 @@
 
 
 // Get the arguments to start the bot
-if (process.argv.length < 7 || process.argv.length > 8) {
+if (process.argv.length == 7) {
     console.log('Usage : node DBot.js <discord bot token> <channel id> <host> <port> [<name>] [<password>]')
     process.exit(1)
   }
@@ -19,7 +19,9 @@ if (process.argv.length < 7 || process.argv.length > 8) {
   const moment = require("moment")
   var fb = require("firebase-admin");
   const { createHash } = require('crypto');
-  const Utility = require("./modules/utility")
+  const Utility = require("./modules/utility.js")
+
+  const Util = new Utility()
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -389,7 +391,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        channel.send(`Current TPS: ${Utility.getTPS()}`)
+        channel.send(`Current TPS: ${Util.getTPS()}`)
         break
       
       // Sends Bot's Health level
@@ -575,7 +577,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        bot.chat(`Current server TPS: ${Utility.getTPS()}`)
+        bot.chat(`Current server TPS: ${Util.getTPS()}`)
         break
       
       // If no command was requested, means message was recieved
@@ -586,7 +588,7 @@ if (process.argv.length < 7 || process.argv.length > 8) {
       default:
 
         // Make the embed have a unique color for each player
-        var embed_color = Utility.hash(username).substring(0,6)
+        var embed_color = Util.hash(username).substring(0,6)
 
         const embed = new MessageEmbed()
         .setAuthor({name: `${username}`, iconURL: `https://crafatar.com/avatars/${bot.players[username].uuid}?overlay`})
