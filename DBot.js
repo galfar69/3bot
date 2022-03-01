@@ -19,9 +19,11 @@ if (process.argv.length == 7) {
   const moment = require("moment")
   var fb = require("firebase-admin");
   const { createHash } = require('crypto');
-  const Utility = require("./modules/utility.js")
+  const Utility = require("./modules/utility")
+  const Info = require("./modules/info") 
 
   const Util = new Utility()
+  const Information = new Info()
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -120,11 +122,6 @@ if (process.argv.length == 7) {
   // Set the variable start_time to the current time and date once the discord bot and minecraft bot have successfully logged in
   var start_time = Date.now()
 
-  // Sha256 hash function
-  function hash(string) {
-    return createHash('sha256').update(string).digest('hex');
-  }
-
   // Converts milliseconds to a more readable format
   function millisToReadable(ms) {
     let seconds = (ms / 1000).toFixed(1);
@@ -178,43 +175,6 @@ if (process.argv.length == 7) {
     if (log === true) console.log(message)
   }
 
-  // Updates topic of the channel(parameter 3)
-  // Self explanatory code :)
-  function updateTopic(playerCount, maxPlayers, TPS, Online = true) {
-    var online = ""
-    if (Online === true) online = "Online"
-    if (Online === false) online = "Offline"
-    channel.setTopic(`**${playerCount}/${maxPlayers}** | **${TPS}** | **Bot: ${online}**`)
-  }
-
-  // A variable to sort through all the activities(statuses)
-  var activityCount = 0
-
-  // A function that goes and sets the activity(status) of the bot
-  function setPresence() {
-
-    //All the activites MUST be stored in this format !!!
-    var activities = [
-      {type:"PLAYING", text:"on 3B3T"},
-      {type:"WATCHING",text:"the server"},
-      {type:"LISTENING",text:"tnt blowing up"},
-      {type:"WATCHING", text:`${Object.keys(bot.players).length}/${bot.game.maxPlayers} players play on\n 3b3t`}
-    ]
-    
-    // Set the user activity(status) based on the current number that is the activityCount variable
-    client.user.setActivity({
-      type: activities[activityCount].type,
-      name: activities[activityCount].text
-    })
-
-    // Increase the activityCount variable by one, if it reaches the end of the list;
-    // reset back to first one
-    activityCount += 1
-    if (activityCount > activities.length-1) {
-      activityCount = 0
-    }
-  }
-
   // A variable that stores what was the last tps
   var lastTps = 0
 
@@ -244,11 +204,11 @@ if (process.argv.length == 7) {
     channel.send({embeds: [embed]})
 
     // Sets interval which the topic of the channel will be changed
-    lastTps = bot.getTps()
-    updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true)
+    lastTps = Information.getTps(bot)
+    Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true)
     setInterval(() => lastTps = bot.getTps, 90000)
-    setInterval(() => updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, bot.getTps(), true), 150000)
-    setInterval(() => {setPresence()}, 30000)
+    setInterval(() => Util.updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true), 150000)
+    setInterval(() => {Util.setPresence(bot, client)}, 30000)
     return
   })
 
@@ -391,7 +351,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        channel.send(`Current TPS: ${Util.getTPS()}`)
+        channel.send(`Current TPS: ${Information.getTps(bot)}`)
         break
       
       // Sends Bot's Health level
@@ -442,19 +402,10 @@ if (process.argv.length == 7) {
           break
 
       case prefix + "uptime":
-        var current_time = Date.now()
-
-        const uptime_embed = new MessageEmbed()
-        .setTitle("Uptime")
-        .setColor("#1133aa")
-        .setDescription(`${millisToReadable((current_time - start_time))}`)
-        .setFooter({ text: 'Made by 3b3t community'})
-        .setTimestamp()
-
-        channel.send({embeds: [uptime_embed]})
+        channel.send({embeds: [Util.getUptime(start_time)]})
         break
 
-      //
+      // XD
       default:
         if (message.content === null || message.content == "") break
 
@@ -577,7 +528,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        bot.chat(`Current server TPS: ${Util.getTPS()}`)
+        bot.chat(`Current server TPS: ${Information.getTps(bot)}`)
         break
       
       // If no command was requested, means message was recieved
@@ -696,9 +647,6 @@ if (process.argv.length == 7) {
 
     // var ch = client.channels.cache.get(channel.toString())
     // ch.send({embeds: [embed]})
-
-    // Update the topic with the bot is offline
-    // updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, lastTps, false)
 
     // Terminate the process to be sure
     // process.exit(1)
