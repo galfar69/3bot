@@ -207,10 +207,10 @@ if (process.argv.length == 7) {
 
     // Sets interval which the topic of the channel will be changed
 
-    lastTps = Information.getTps(bot)
-    Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true)
-    setInterval(() => lastTps = bot.getTps, 90000)
-    setInterval(() => Util.updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true), 150000)
+    lastTps = Information.getTPS(bot)
+    Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTPS(bot), true)
+    setInterval(() => lastTps = bot.getTPS, 90000)
+    setInterval(() => Util.updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTPS(bot), true), 150000)
     setInterval(() => {Util.setPresence(bot, client)}, 30000)
 
     return
@@ -355,7 +355,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        channel.send(`Current TPS: ${Information.getTps(bot)}`)
+        channel.send(`Current TPS: ${Information.getTPS(bot)}`)
 
         break
       
@@ -407,7 +407,7 @@ if (process.argv.length == 7) {
           break
 
       case prefix + "uptime":
-        channel.send({embeds: [Util.getUptime(start_time)]})
+        channel.send({embeds: [Information.getUptime(start_time)]})
         break
 
       // XD
@@ -533,7 +533,7 @@ if (process.argv.length == 7) {
       // Sends current server TPS
       // Usage: <Prefix>tps
       case prefix + "tps":
-        bot.chat(`Current server TPS: ${Information.getTps(bot)}`)
+        bot.chat(`Current server TPS: ${Information.getTPS(bot)}`)
         break
       
       // If no command was requested, means message was recieved
