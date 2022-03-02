@@ -19,11 +19,13 @@ if (process.argv.length == 7) {
   const moment = require("moment")
   var fb = require("firebase-admin");
   const { createHash } = require('crypto');
+
   const Utility = require("./modules/utility")
   const Info = require("./modules/info") 
 
   const Util = new Utility()
   const Information = new Info()
+
 
   // Get the creditentials used for accessing the db
   var serviceAccount = require("./your-service-account-key.json");
@@ -204,11 +206,13 @@ if (process.argv.length == 7) {
     channel.send({embeds: [embed]})
 
     // Sets interval which the topic of the channel will be changed
+
     lastTps = Information.getTps(bot)
     Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true)
     setInterval(() => lastTps = bot.getTps, 90000)
     setInterval(() => Util.updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTps(bot), true), 150000)
     setInterval(() => {Util.setPresence(bot, client)}, 30000)
+
     return
   })
 
@@ -352,6 +356,7 @@ if (process.argv.length == 7) {
       // Usage: <Prefix>tps
       case prefix + "tps":
         channel.send(`Current TPS: ${Information.getTps(bot)}`)
+
         break
       
       // Sends Bot's Health level

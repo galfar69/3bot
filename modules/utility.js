@@ -1,5 +1,7 @@
 const { createHash } = require('crypto')
 
+
+// Purely utility. Math, hashing, etc...
 class Utility {
 
     constructor(activityCount = 0) {
@@ -11,6 +13,7 @@ class Utility {
         return createHash('sha256').update(string).digest('hex');
     }
     
+
 
     // Updates topic of the channel(parameter 3)
     // Self explanatory code :)

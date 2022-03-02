@@ -14,6 +14,7 @@ class Info {
         .setTimestamp()
 
         return uptime_embed
+
     }
 
     // Get the TPS of the server
