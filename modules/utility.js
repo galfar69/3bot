@@ -1,6 +1,5 @@
 const { createHash } = require('crypto')
 
-
 // Purely utility. Math, hashing, etc...
 class Utility {
 
@@ -49,10 +48,12 @@ class Utility {
     // Updates topic of the channel(parameter 3)
     // Self explanatory code :)
     updateTopic(channel, playerCount, maxPlayers, TPS, Online = true) {
+        channel = toString(channel)
         var online = ""
         if (Online === true) online = "Online"
         if (Online === false) online = "Offline"
-        channel.setTopic(`**${playerCount}/${maxPlayers}** | **${TPS}** | **Bot: ${online}**`)
+        // TODO: Does not work, please fix
+        // channel.setTopic(`**${playerCount}/${maxPlayers}** | **${TPS}** | **Bot: ${online}**`)
     }
 
 

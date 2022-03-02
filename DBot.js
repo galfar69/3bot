@@ -210,7 +210,7 @@ if (process.argv.length == 7) {
     lastTps = Information.getTPS(bot)
     Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTPS(bot), true)
     setInterval(() => lastTps = bot.getTPS, 90000)
-    setInterval(() => Util.updateTopic(Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTPS(bot), true), 150000)
+    setInterval(() => Util.updateTopic(channel, Object.keys(bot.players).length, bot.game.maxPlayers, Information.getTPS(bot), true), 150000)
     setInterval(() => {Util.setPresence(bot, client)}, 30000)
 
     return
